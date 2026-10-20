@@ -1,0 +1,16 @@
+{
+  "name": "as-ads-cetak-desain",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website company profile AS-ADS Cetak Desain (static, tanpa dependency)",
+  "scripts": {
+    "dev": "node scripts/build.mjs --preview && node scripts/serve.mjs dist 4174",
+    "build:preview": "node scripts/build.mjs --preview",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs dist",
+    "serve": "node scripts/serve.mjs dist 4174",
+    "assets": "node scripts/fetch-figma-assets.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
