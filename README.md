@@ -22,4 +22,3 @@ npm run build    # build production → dist/
 - Section muncul saat di-scroll; kalimat besar di beranda menyala kata demi kata mengikuti scroll.
 - Latar gradien pink–oranye bergerak pelan, strip teks berjalan, parallax ringan pada ilustrasi layanan.
 - Semua animasi dimatikan bila pengguna memilih “kurangi gerakan” di sistem operasinya.
-"# AS-ADS" 
