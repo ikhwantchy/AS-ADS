@@ -5,7 +5,7 @@ export const site = {
   shortName: 'AS-ADS',
   url: 'https://as-ads.cetakdesain.biz.id',
   // Blog artikel (Blogger). Menu Blog dan bagian "Artikel terbaru" di Beranda mengarah ke sini.
-  blogUrl: 'https://blog.sendr.web.id',
+  blogUrl: 'https://asads-cetakdesain.blogspot.com',
   // Platform blog untuk menarik artikel terbaru: 'blogger' (feed JSONP) atau 'wordpress' (REST API /wp-json).
   blogPlatform: 'blogger',
   lang: 'id',
