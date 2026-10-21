@@ -3,7 +3,11 @@
 export const site = {
   name: 'AS-ADS Cetak Desain',
   shortName: 'AS-ADS',
-  url: 'https://cetakdesain.biz.id',
+  url: 'https://as-ads.cetakdesain.biz.id',
+  // Blog artikel (Blogger). Menu Blog dan bagian "Artikel terbaru" di Beranda mengarah ke sini.
+  blogUrl: 'https://blog.sendr.web.id',
+  // Platform blog untuk menarik artikel terbaru: 'blogger' (feed JSONP) atau 'wordpress' (REST API /wp-json).
+  blogPlatform: 'blogger',
   lang: 'id',
   locale: 'id_ID',
   tagline: 'Partner kreatif untuk kebutuhan desain dan cetak.',
@@ -17,7 +21,7 @@ export const site = {
   // TODO: KONFIRMASI PEMILIK — lokasi umum (bukan alamat lengkap), mis. 'Kalisuren, Bogor'. Kosong = tidak ditampilkan.
   locationPublic: 'Jabon Mekar Parung · Ciputat · Kebayoran Lama',
   // TODO: KONFIRMASI PEMILIK — email bisnis. Kosong = tidak ditampilkan.
-  email: 'as_ads@outlook.com',
+  email: 'halo@cetakdesain.biz.id',
   // TODO: KONFIRMASI PEMILIK — URL profil sosial resmi. Kosong = ikon tidak ditampilkan.
   social: { instagram: '', facebook: '' },
 

@@ -41,10 +41,25 @@
     return el.querySelectorAll('.' + cls);
   };
 
+  // Teks asli tetap dibaca pembaca layar lewat span tersembunyi; potongan kata animasi disembunyikan.
+  const keepText = (el) => {
+    const sr = document.createElement('span');
+    sr.className = 'visually-hidden'; sr.textContent = el.textContent.trim();
+    return sr;
+  };
+  const wrapWords = (el, cls) => {
+    const sr = keepText(el);
+    const words = [...splitWords(el, cls)];
+    const box = document.createElement('span');
+    box.setAttribute('aria-hidden', 'true');
+    box.append(...el.childNodes);
+    el.append(sr, box);
+    return words;
+  };
+
   if (!reduce) {
     document.querySelectorAll('[data-split]').forEach((el) => {
-      el.setAttribute('aria-label', el.textContent.trim());
-      splitWords(el, 'w').forEach((w, i) => { w.style.setProperty('--w', i); w.setAttribute('aria-hidden', 'true'); });
+      wrapWords(el, 'w').forEach((w, i) => w.style.setProperty('--w', i));
     });
     document.querySelectorAll('[data-hero-fade]').forEach((el, i) => el.style.setProperty('--d', `${0.55 + i * 0.12}s`));
   }
@@ -66,12 +81,7 @@
   }
 
   // Kalimat besar: kata menyala bertahap mengikuti posisi scroll (Figma "Not sure where to start").
-  const wordBlocks = reduce ? [] : [...document.querySelectorAll('[data-words]')].map((el) => {
-    el.setAttribute('aria-label', el.textContent.trim());
-    const words = [...splitWords(el, 'word')];
-    words.forEach((w) => w.setAttribute('aria-hidden', 'true'));
-    return { el, words };
-  });
+  const wordBlocks = reduce ? [] : [...document.querySelectorAll('[data-words]')].map((el) => ({ el, words: wrapWords(el, 'word') }));
 
   // Parallax halus untuk ilustrasi.
   const parallaxEls = reduce ? [] : [...document.querySelectorAll('[data-parallax]')];
@@ -85,7 +95,8 @@
       const r = el.getBoundingClientRect();
       const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
       const lit = p * words.length;
-      words.forEach((w, i) => { w.style.opacity = String(Math.min(1, Math.max(0.18, lit - i + 0.18))); });
+      // Batas bawah 0.5 agar kata yang belum menyala tetap memenuhi kontras 3:1 untuk teks besar.
+      words.forEach((w, i) => { w.style.opacity = String(Math.min(1, Math.max(0.5, lit - i + 0.5))); });
     });
     parallaxEls.forEach((el) => {
       const r = el.getBoundingClientRect();
@@ -128,6 +139,49 @@
         if (show && !reduce) { void card.offsetWidth; card.style.animationDelay = `${(i % 3) * 60}ms`; card.classList.add('is-filtered-in'); }
       });
     }));
+  }
+
+  // Artikel terbaru dari blog (Blogger lewat feed JSONP, atau WordPress lewat REST API).
+  const feed = document.querySelector('[data-blog-feed]');
+  if (feed) {
+    const base = feed.dataset.blogFeed.replace(/\/$/, '');
+    const platform = feed.dataset.blogPlatform;
+    const strip = (html) => { const t = document.createElement('div'); t.innerHTML = html || ''; return (t.textContent || '').replace(/\s+/g, ' ').trim(); };
+    const fmt = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return ''; } };
+    const card = (p) => {
+      const a = document.createElement('a');
+      a.className = 'blog-card'; a.href = p.url;
+      if (p.img) { const im = document.createElement('img'); im.src = p.img; im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 640; im.height = 360; im.className = 'blog-card__img'; a.append(im); }
+      const d = document.createElement('span'); d.className = 'chip'; d.textContent = fmt(p.date) || 'Artikel'; a.append(d);
+      const t = document.createElement('span'); t.className = 'blog-card__title'; t.textContent = p.title; a.append(t);
+      if (p.text) { const x = document.createElement('span'); x.className = 'blog-card__text'; x.textContent = p.text.length > 120 ? p.text.slice(0, 117) + '…' : p.text; a.append(x); }
+      const m = document.createElement('span'); m.className = 'blog-card__more'; m.innerHTML = 'Baca artikel <span aria-hidden="true">→</span>'; a.append(m);
+      return a;
+    };
+    const show = (posts) => {
+      if (!posts.length) return;
+      feed.replaceChildren(...posts.slice(0, 3).map(card));
+      feed.classList.add('is-loaded');
+    };
+    if (platform === 'wordpress') {
+      fetch(`${base}/wp-json/wp/v2/posts?per_page=3&_embed=wp:featuredmedia`).then((r) => (r.ok ? r.json() : [])).then((list) => show(list.map((p) => ({
+        url: p.link, title: strip(p.title && p.title.rendered), date: p.date, text: strip(p.excerpt && p.excerpt.rendered),
+        img: p._embedded && p._embedded['wp:featuredmedia'] && p._embedded['wp:featuredmedia'][0] && p._embedded['wp:featuredmedia'][0].source_url,
+      })))).catch(() => {});
+    } else {
+      window.__asadsBlog = (data) => {
+        const entries = (data && data.feed && data.feed.entry) || [];
+        show(entries.map((e) => ({
+          url: ((e.link || []).find((l) => l.rel === 'alternate') || {}).href,
+          title: e.title && e.title.$t, date: e.published && e.published.$t,
+          text: strip((e.summary && e.summary.$t) || (e.content && e.content.$t)),
+          img: e.media$thumbnail && e.media$thumbnail.url.replace(/\/s72(-c)?\//, '/w640-h360-c/'),
+        })).filter((p) => p.url));
+      };
+      const s = document.createElement('script');
+      s.src = `${base}/feeds/posts/default?alt=json-in-script&max-results=3&callback=__asadsBlog`;
+      s.async = true; document.body.append(s);
+    }
   }
 
   // Event whatsapp_click (PRD §9.9): hanya label sumber & halaman. Tidak mengirim nomor/isi pesan.

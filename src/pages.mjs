@@ -2,7 +2,7 @@ import { site } from '../site.config.mjs';
 import { esc, badge, waHref } from './layout.mjs';
 import {
   SERVICES, sectionHead, pageHero, marquee, stepCards, serviceCards, portfolioCarousel, portfolioGrid,
-  questionRows, closingBox,
+  questionRows, closingBox, blogSection,
 } from './sections.mjs';
 
 const home = {
@@ -60,6 +60,8 @@ ${marquee()}
     ${questionRows()}
   </div>
 </section>
+
+${blogSection()}
 
 ${closingBox()}
 `,

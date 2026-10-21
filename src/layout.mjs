@@ -23,6 +23,7 @@ export const NAV = [
   { href: '/portofolio/', label: 'Portofolio', key: 'portofolio' },
   { href: '/tentang/', label: 'Tentang', key: 'tentang' },
   { href: '/kontak/', label: 'Kontak', key: 'kontak' },
+  ...(site.blogUrl ? [{ href: site.blogUrl + '/', label: 'Blog', key: 'blog' }] : []),
 ];
 
 function header(active) {
@@ -67,6 +68,7 @@ function footer() {
         <ul>
           <li><a href="/layanan/#desain-grafis">Desain Grafis</a></li>
           <li><a href="/layanan/#percetakan">Percetakan</a></li>
+          ${site.blogUrl ? `<li><a href="${site.blogUrl}/">Artikel &amp; tips</a></li>` : ''}
         </ul>
       </div>
     </div>

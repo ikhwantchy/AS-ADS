@@ -157,4 +157,23 @@ export function closingBox() {
   </section>`;
 }
 
+// Artikel terbaru dari Blogger. Isi diambil di browser lewat feed JSONP Blogger (main.js);
+// tanpa JS atau bila feed gagal/kosong, kartu ajakan ke blog tetap tampil.
+export function blogSection() {
+  if (!site.blogUrl) return '';
+  return `<section class="section blog" aria-labelledby="blog-title">
+    <div class="container">
+      ${sectionHead({ eyebrow: 'Blog', title: 'Tips desain dan cetak, *biar nggak salah langkah.*', id: 'blog-title', intro: 'Panduan singkat soal ukuran, bahan, dan persiapan file sebelum dicetak.' })}
+      <div class="blog-grid" data-blog-feed="${esc(site.blogUrl)}" data-blog-platform="${esc(site.blogPlatform || 'blogger')}" data-reveal>
+        <a class="blog-card blog-card--cta" href="${esc(site.blogUrl)}/">
+          <span class="chip">Blog AS-ADS</span>
+          <span class="blog-card__title">Baca artikel terbaru di blog AS-ADS</span>
+          <span class="blog-card__more">Kunjungi blog <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+      <div class="works__more"><a class="btn btn--outline" href="${esc(site.blogUrl)}/">Lihat semua artikel</a></div>
+    </div>
+  </section>`;
+}
+
 export { sectionHead };

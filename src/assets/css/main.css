@@ -97,8 +97,9 @@ button { font: inherit; }
 .hero__title em { font-size: 1.34em; line-height: 0; }
 .hero__text { max-width: 629px; margin-top: 24px; font-size: 18.438px; line-height: 30px; letter-spacing: -0.4px; }
 .hero__meta { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; font-size: 14.75px; color: var(--muted); }
-.hero__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 0 rgba(183, 40, 50, .4); animation: pulse 2.4s var(--ease-soft) infinite; }
-@keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(183, 40, 50, 0); } 100% { box-shadow: 0 0 0 0 rgba(183, 40, 50, 0); } }
+.hero__dot { position: relative; width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
+.hero__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: rgba(183, 40, 50, .45); animation: pulse 2.4s var(--ease-soft) infinite; }
+@keyframes pulse { 0% { transform: scale(1); opacity: .9; } 70%, 100% { transform: scale(3); opacity: 0; } }
 .hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin-top: 26px; }
 .hero__actions--404 { justify-content: flex-start; padding-bottom: 120px; gap: 12px; }
 
@@ -193,6 +194,20 @@ button { font: inherit; }
 .q-row__num { font-size: 15px; }
 .q-row__text { font-size: clamp(17px, 1.2vw + 8px, 20px); font-weight: 600; letter-spacing: -0.02em; }
 
+/* ---------- Artikel terbaru dari blog ---------- */
+.blog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.blog-grid:not(.is-loaded) { grid-template-columns: minmax(0, 560px); justify-content: center; }
+.blog-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px; border-radius: var(--radius); background: rgba(254, 250, 224, .64); border: 2px solid var(--cream-line); text-decoration: none; box-shadow: 6px 4px 37px rgba(124, 124, 124, .05); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+.blog-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(170, 90, 60, .16); }
+.blog-card--cta { align-items: center; text-align: center; padding: 40px 32px; background: var(--peach); }
+.blog-card__img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; background: var(--peach); }
+.blog-card__title { font-size: 19px; line-height: 1.35; letter-spacing: -0.03em; font-weight: 500; }
+.blog-card__text { font-size: 14px; line-height: 1.55; color: var(--soft); }
+.blog-card__more { margin-top: auto; font-size: 14px; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.blog-card__more span { display: inline-block; transition: transform .35s var(--ease); }
+.blog-card:hover .blog-card__more span { transform: translateX(4px); }
+.blog .works__more { margin-top: 32px; }
+
 /* ---------- Kotak penutup (Figma "Ready to scale your brand") ---------- */
 .closing { padding: 40px 0 120px; }
 .closing__box { max-width: 1000px; margin-inline: auto; padding: 48px 32px 56px; text-align: center; background: var(--peach); border: 1px solid rgba(13, 13, 13, .48); border-radius: var(--radius); }
@@ -243,20 +258,20 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
 .contact-card__hint { font-size: 14px; color: var(--soft); }
 
 /* ---------- Footer (Figma: #3D3D3D 81%) ---------- */
-.site-footer { position: relative; background: rgba(61, 61, 61, .94); color: #f9fafb; backdrop-filter: blur(2px); }
+.site-footer { position: relative; background: #3d3d3d; color: #f9fafb; }
 .site-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; padding: 64px 0 48px; }
 .footer-logo img { height: 52px; width: auto; }
 .site-footer__about > p { margin-top: 20px; max-width: 390px; font-size: 15.25px; line-height: 24px; letter-spacing: -0.32px; }
 .footer-contact { display: grid; gap: 10px; margin-top: 24px; font-size: 14px; }
 .footer-contact li { display: flex; gap: 12px; }
-.footer-contact span { min-width: 84px; color: rgba(249, 250, 251, .6); }
+.footer-contact span { min-width: 84px; color: rgba(249, 250, 251, .82); }
 .footer-contact a { text-decoration: underline; text-underline-offset: 3px; }
 .site-footer__links { display: flex; justify-content: flex-end; gap: 64px; }
 .footer-title { font-size: 15px; font-weight: 500; margin-bottom: 15px; }
 .site-footer__links ul { display: grid; gap: 14px; font-size: 13px; }
 .site-footer__links a { text-decoration: none; color: rgba(249, 250, 251, .85); transition: color .25s; }
 .site-footer__links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.site-footer__bottom { border-top: 1px solid rgba(255, 255, 255, .12); padding: 20px 0 28px; font-size: 13px; color: rgba(249, 250, 251, .7); }
+.site-footer__bottom { border-top: 1px solid rgba(255, 255, 255, .12); padding: 20px 0 28px; font-size: 13px; color: rgba(249, 250, 251, .85); }
 
 /* =========================================================
    Animasi
@@ -268,22 +283,22 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
 ::view-transition-group(root) { animation-duration: .6s; }
 ::view-transition-old(root) { animation: vt-out .32s var(--ease-soft) both; }
 ::view-transition-new(root) { animation: vt-in .6s var(--ease) .08s both; }
-@keyframes vt-out { to { opacity: 0; filter: blur(6px); transform: translateY(-12px) scale(.995); } }
-@keyframes vt-in { from { opacity: 0; filter: blur(8px); transform: translateY(24px); } }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px) scale(.995); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(24px); } }
 @supports not (view-transition-name: none) {
   main { animation: vt-in .7s var(--ease) both; }
 }
 
 /* Judul hero: kata demi kata muncul dengan blur (diaktifkan main.js) */
-.js [data-split] .w { display: inline-block; opacity: 0; filter: blur(10px); transform: translateY(.35em); animation: word-in .9s var(--ease) forwards; animation-delay: calc(var(--w) * 70ms + 120ms); }
+.js [data-split] .w { display: inline-block; opacity: 0; transform: translateY(.35em); animation: word-in .7s var(--ease) forwards; animation-delay: calc(var(--w) * 45ms + 40ms); }
 .js [data-split] em.w { padding-right: .06em; }
-@keyframes word-in { to { opacity: 1; filter: blur(0); transform: none; } }
-.js [data-hero-fade] { opacity: 0; transform: translateY(16px); animation: fade-up .9s var(--ease) forwards; animation-delay: var(--d, .55s); }
+@keyframes word-in { to { opacity: 1; transform: none; } }
+.js [data-hero-fade] { opacity: 0; transform: translateY(16px); animation: fade-up .7s var(--ease) forwards; animation-delay: var(--d, .3s); }
 @keyframes fade-up { to { opacity: 1; transform: none; } }
 
 /* Muncul saat di-scroll */
-.js [data-reveal] { opacity: 0; filter: blur(6px); transform: translateY(32px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
-.js [data-reveal].is-in { opacity: 1; filter: blur(0); transform: none; }
+.js [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
 .js [data-reveal].is-done { transition: transform .5s var(--ease), box-shadow .5s var(--ease), padding .45s var(--ease), background-color .45s, border-color .4s; transition-delay: 0s; }
 
 /* Kartu portofolio saat filter */
@@ -293,7 +308,7 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
 
 /* ---------- Responsif ---------- */
 @media (max-width: 1080px) {
-  .step-list, .tag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step-list, .tag-grid, .blog-grid.is-loaded { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
@@ -321,7 +336,7 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
   .hero { padding: 56px 0 80px; }
   .hero__actions { gap: 12px; width: 100%; }
   .hero__actions .btn { flex: 1 1 100%; }
-  .step-list, .tag-grid, .work-grid, .svc-grid { grid-template-columns: 1fr; }
+  .step-list, .tag-grid, .work-grid, .svc-grid, .blog-grid.is-loaded { grid-template-columns: 1fr; }
   .svc-card--wide { grid-column: auto; }
   .q-row { grid-template-columns: 36px 1fr; padding: 28px 4px; }
   .q-row .chip { grid-column: 2; justify-self: start; }
@@ -336,6 +351,6 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   @view-transition { navigation: none; }
-  .js [data-reveal], .js [data-split] .w, .js [data-hero-fade] { opacity: 1 !important; filter: none !important; transform: none !important; }
+  .js [data-reveal], .js [data-split] .w, .js [data-hero-fade] { opacity: 1 !important; transform: none !important; }
   .blob { animation: none; }
 }
