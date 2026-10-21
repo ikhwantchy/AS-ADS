@@ -1,4 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { site } from '../site.config.mjs';
+
+// Versi aset dari isi file: link CSS/JS berubah setiap kali isinya berubah,
+// sehingga browser tidak memakai cache lama (server menyimpan cache aset selama 7 hari).
+const ver = (file) => createHash('sha1').update(readFileSync(new URL(`./assets/${file}`, import.meta.url))).digest('hex').slice(0, 8);
+const CSS_VER = ver('css/main.css');
+const JS_VER = ver('js/main.js');
 
 export const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -110,7 +118,7 @@ ${path === '/404.html' ? '' : `<link rel="canonical" href="${canonical}">`}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/main.css?v=${CSS_VER}">
 ${jsonLd}
 </head>
 <body${preview ? ' class="is-preview"' : ''}>
@@ -122,7 +130,7 @@ ${header(active)}
 ${body}
 </main>
 ${footer()}
-<script src="/assets/js/main.js" defer></script>
+<script src="/assets/js/main.js?v=${JS_VER}" defer></script>
 </body>
 </html>`;
 }

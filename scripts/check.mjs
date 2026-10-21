@@ -5,7 +5,7 @@ const root = process.argv[2] || 'dist';
 const walk = async (d) => (await Promise.all((await readdir(d)).map(async (f) => { const p = join(d, f); return (await stat(p)).isDirectory() ? walk(p) : [p]; }))).flat();
 const files = await walk(root);
 const html = files.filter((f) => f.endsWith('.html'));
-const exists = (u) => { const p = join(root, u.split('#')[0]); return files.includes(p) || files.includes(join(p, 'index.html')); };
+const exists = (u) => { const p = join(root, u.split(/[#?]/)[0]); return files.includes(p) || files.includes(join(p, 'index.html')); };
 const issues = []; const titles = new Map(); const descs = new Map();
 let preview = false;
 for (const f of html) {
