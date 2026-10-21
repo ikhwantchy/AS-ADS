@@ -139,12 +139,12 @@ export function postPage(p) {
     description: p.excerpt.replace(/…$/, ''),
     article: { published: p.date, modified: p.updated, image: p.img },
     body: () => `
-<article class="post">
+<article class="post" data-blog-reader="${esc(base())}" data-post-id="${esc(p.id)}">
   <div class="container container--post">
     <a class="post__back" href="/blog/">← Semua artikel</a>
-    <h1 class="post__title">${esc(p.title)}</h1>
-    <p class="post__meta"><time datetime="${esc(p.date)}">${esc(fmtDate(p.date))}</time> · AS-ADS Cetak Desain</p>
-    <div class="prose">${p.html}</div>
+    <h1 class="post__title" data-post-title>${esc(p.title)}</h1>
+    <p class="post__meta" data-post-meta><time datetime="${esc(p.date)}">${esc(fmtDate(p.date))}</time> · AS-ADS Cetak Desain</p>
+    <div class="prose" data-post-body>${p.html}</div>
   </div>
 </article>
 ${closingBox()}

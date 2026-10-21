@@ -173,43 +173,51 @@
     return a;
   };
 
+  // Isi artikel dari Blogger dibersihkan agar mengikuti gaya website.
+  const cleanBody = (html) => {
+    const doc = new DOMParser().parseFromString(html || '', 'text/html');
+    doc.querySelectorAll('script, style, iframe:not([src*="youtube"])').forEach((n) => n.remove());
+    doc.querySelectorAll('*').forEach((n) => [...n.attributes].forEach((a) => { if (/^on|^style$/i.test(a.name)) n.removeAttribute(a.name); }));
+    doc.querySelectorAll('img').forEach((im) => {
+      im.src = im.src.replace(/(blogger\.googleusercontent\.com\/img\/.*?\/)(s|w)\d+(-h\d+)?(-c)?\//, '$1s1600/');
+      if (im.dataset.originalWidth) { im.width = im.dataset.originalWidth; im.height = im.dataset.originalHeight; }
+      im.loading = 'lazy'; im.decoding = 'async';
+    });
+    doc.querySelectorAll('table').forEach((t) => { const w = document.createElement('div'); w.className = 'prose__table'; t.replaceWith(w); w.append(t); });
+    return [...doc.body.childNodes];
+  };
+
+  // Daftar artikel selalu disusun ulang dari feed, sehingga gambar, judul, dan artikel baru
+  // dari Blogger langsung tampil tanpa build ulang. Isi hasil build tetap jadi cadangan.
   document.querySelectorAll('[data-blog-feed]').forEach((grid) => {
     const base = grid.dataset.blogFeed; if (!base) return;
     let built = []; try { built = JSON.parse(grid.dataset.blogBuilt || '[]'); } catch {}
     const limit = Number(grid.dataset.blogLimit) || 100;
     jsonp(`${base}/feeds/posts/default?max-results=${Math.min(limit, 50)}`, 'list').then((data) => {
-      const fresh = ((data.feed && data.feed.entry) || []).map(entryInfo).filter((p) => p.id && p.title && !built.includes(p.slug));
-      if (!fresh.length) return;
-      if (!built.length) grid.replaceChildren();
-      grid.prepend(...fresh.map((p) => cardEl(p, `/blog/baca/?id=${p.id}`)));
-      while (grid.children.length > limit) grid.lastElementChild.remove();
+      const posts = ((data.feed && data.feed.entry) || []).map(entryInfo).filter((p) => p.id && p.title).slice(0, limit);
+      if (!posts.length) return;
+      grid.replaceChildren(...posts.map((p) => cardEl(p, built.includes(p.slug) ? `/blog/${p.slug}/` : `/blog/baca/?id=${p.id}`)));
       grid.classList.add('is-loaded');
     }).catch(() => {});
   });
 
+  // Halaman artikel: muat versi terbaru dari Blogger (halaman statis /blog/<slug>/ maupun /blog/baca/?id=).
   const reader = document.querySelector('[data-blog-reader]');
   if (reader) {
-    const id = new URLSearchParams(location.search).get('id');
+    const id = reader.dataset.postId || new URLSearchParams(location.search).get('id');
+    const isStatic = Boolean(reader.dataset.postId);
     const $ = (sel) => reader.querySelector(sel);
+    const notFound = () => { if (!isStatic) $('[data-post-title]').textContent = 'Artikel tidak ditemukan'; };
     if (id && /^\d+$/.test(id)) {
       jsonp(`${reader.dataset.blogReader}/feeds/posts/default/${id}`, 'post').then((data) => {
         const e = data.entry; if (!e) throw new Error('kosong');
         const p = entryInfo(e);
-        const doc = new DOMParser().parseFromString((e.content && e.content.$t) || '', 'text/html');
-        doc.querySelectorAll('script, style, iframe:not([src*="youtube"])').forEach((n) => n.remove());
-        doc.querySelectorAll('*').forEach((n) => [...n.attributes].forEach((a) => { if (/^on|^style$/i.test(a.name)) n.removeAttribute(a.name); }));
-        doc.querySelectorAll('img').forEach((im) => {
-          im.src = im.src.replace(/(blogger\.googleusercontent\.com\/img\/.*?\/)(s|w)\d+(-h\d+)?(-c)?\//, '$1s1600/');
-          if (im.dataset.originalWidth) { im.width = im.dataset.originalWidth; im.height = im.dataset.originalHeight; }
-          im.loading = 'lazy'; im.decoding = 'async';
-        });
-        doc.querySelectorAll('table').forEach((t) => { const w = document.createElement('div'); w.className = 'prose__table'; t.replaceWith(w); w.append(t); });
         $('[data-post-title]').textContent = p.title;
         $('[data-post-meta]').textContent = `${fmt(p.date)} · AS-ADS Cetak Desain`;
-        $('[data-post-body]').replaceChildren(...doc.body.childNodes);
-        document.title = `${p.title} | AS-ADS Cetak Desain`;
-      }).catch(() => { $('[data-post-title]').textContent = 'Artikel tidak ditemukan'; });
-    } else { $('[data-post-title]').textContent = 'Artikel tidak ditemukan'; }
+        $('[data-post-body]').replaceChildren(...cleanBody(e.content && e.content.$t));
+        if (!isStatic) document.title = `${p.title} | AS-ADS Cetak Desain`;
+      }).catch(notFound);
+    } else notFound();
   }
 
   // Event whatsapp_click (PRD §9.9): hanya label sumber & halaman. Tidak mengirim nomor/isi pesan.
