@@ -141,47 +141,75 @@
     }));
   }
 
-  // Artikel terbaru dari blog (Blogger lewat feed JSONP, atau WordPress lewat REST API).
-  const feed = document.querySelector('[data-blog-feed]');
-  if (feed) {
-    const base = feed.dataset.blogFeed.replace(/\/$/, '');
-    const platform = feed.dataset.blogPlatform;
-    const strip = (html) => { const t = document.createElement('div'); t.innerHTML = html || ''; return (t.textContent || '').replace(/\s+/g, ' ').trim(); };
-    const fmt = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return ''; } };
-    const card = (p) => {
-      const a = document.createElement('a');
-      a.className = 'blog-card'; a.href = p.url;
-      if (p.img) { const im = document.createElement('img'); im.src = p.img; im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 640; im.height = 360; im.className = 'blog-card__img'; a.append(im); }
-      const d = document.createElement('span'); d.className = 'chip'; d.textContent = fmt(p.date) || 'Artikel'; a.append(d);
-      const t = document.createElement('span'); t.className = 'blog-card__title'; t.textContent = p.title; a.append(t);
-      if (p.text) { const x = document.createElement('span'); x.className = 'blog-card__text'; x.textContent = p.text.length > 120 ? p.text.slice(0, 117) + '…' : p.text; a.append(x); }
-      const m = document.createElement('span'); m.className = 'blog-card__more'; m.innerHTML = 'Baca artikel <span aria-hidden="true">→</span>'; a.append(m);
-      return a;
+  // Blog di dalam website. Artikel yang sudah di-build punya halaman /blog/<slug>/;
+  // artikel yang terbit setelah build ditambahkan dari feed Blogger dan dibuka di /blog/baca/?id=<postId>.
+  const jsonp = (url, name) => new Promise((resolve, reject) => {
+    const cb = `__asads_${name}_${Date.now()}`;
+    const s = document.createElement('script');
+    window[cb] = (data) => { resolve(data); delete window[cb]; s.remove(); };
+    s.onerror = () => { reject(new Error('feed')); delete window[cb]; s.remove(); };
+    s.src = `${url}${url.includes('?') ? '&' : '?'}alt=json-in-script&callback=${cb}`;
+    s.async = true; document.body.append(s);
+  });
+  const slugOf = (url) => (url.split('/').pop() || '').replace(/\.html?$/, '');
+  const fmt = (iso) => { try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return ''; } };
+  const textOf = (html) => { const t = document.createElement('div'); t.innerHTML = html || ''; return (t.textContent || '').replace(/\s+/g, ' ').trim(); };
+  const entryInfo = (e) => {
+    const url = ((e.link || []).find((l) => l.rel === 'alternate') || {}).href || '';
+    return {
+      id: ((e.id && e.id.$t) || '').split('post-')[1] || '', slug: slugOf(url),
+      title: textOf(e.title && e.title.$t), date: e.published && e.published.$t,
+      text: textOf((e.content && e.content.$t) || (e.summary && e.summary.$t)),
+      img: e.media$thumbnail && e.media$thumbnail.url.replace(/\/s72(-c)?\//, '/s800/'),
     };
-    const show = (posts) => {
-      if (!posts.length) return;
-      feed.replaceChildren(...posts.slice(0, 3).map(card));
-      feed.classList.add('is-loaded');
-    };
-    if (platform === 'wordpress') {
-      fetch(`${base}/wp-json/wp/v2/posts?per_page=3&_embed=wp:featuredmedia`).then((r) => (r.ok ? r.json() : [])).then((list) => show(list.map((p) => ({
-        url: p.link, title: strip(p.title && p.title.rendered), date: p.date, text: strip(p.excerpt && p.excerpt.rendered),
-        img: p._embedded && p._embedded['wp:featuredmedia'] && p._embedded['wp:featuredmedia'][0] && p._embedded['wp:featuredmedia'][0].source_url,
-      })))).catch(() => {});
-    } else {
-      window.__asadsBlog = (data) => {
-        const entries = (data && data.feed && data.feed.entry) || [];
-        show(entries.map((e) => ({
-          url: ((e.link || []).find((l) => l.rel === 'alternate') || {}).href,
-          title: e.title && e.title.$t, date: e.published && e.published.$t,
-          text: strip((e.summary && e.summary.$t) || (e.content && e.content.$t)),
-          img: e.media$thumbnail && e.media$thumbnail.url.replace(/\/s72(-c)?\//, '/w640-h360-c/'),
-        })).filter((p) => p.url));
-      };
-      const s = document.createElement('script');
-      s.src = `${base}/feeds/posts/default?alt=json-in-script&max-results=3&callback=__asadsBlog`;
-      s.async = true; document.body.append(s);
-    }
+  };
+  const cardEl = (p, href) => {
+    const a = document.createElement('a'); a.className = 'blog-card'; a.href = href;
+    if (p.img) { const im = document.createElement('img'); Object.assign(im, { src: p.img, alt: '', loading: 'lazy', decoding: 'async', width: 640, height: 360, className: 'blog-card__img' }); a.append(im); }
+    const add = (cls, txt) => { const el = document.createElement('span'); el.className = cls; el.textContent = txt; a.append(el); };
+    add('chip', fmt(p.date) || 'Artikel'); add('blog-card__title', p.title);
+    if (p.text) add('blog-card__text', p.text.length > 150 ? p.text.slice(0, 147) + '…' : p.text);
+    const m = document.createElement('span'); m.className = 'blog-card__more'; m.innerHTML = 'Baca artikel <span aria-hidden="true">→</span>'; a.append(m);
+    return a;
+  };
+
+  document.querySelectorAll('[data-blog-feed]').forEach((grid) => {
+    const base = grid.dataset.blogFeed; if (!base) return;
+    let built = []; try { built = JSON.parse(grid.dataset.blogBuilt || '[]'); } catch {}
+    const limit = Number(grid.dataset.blogLimit) || 100;
+    jsonp(`${base}/feeds/posts/default?max-results=${Math.min(limit, 50)}`, 'list').then((data) => {
+      const fresh = ((data.feed && data.feed.entry) || []).map(entryInfo).filter((p) => p.id && p.title && !built.includes(p.slug));
+      if (!fresh.length) return;
+      if (!built.length) grid.replaceChildren();
+      grid.prepend(...fresh.map((p) => cardEl(p, `/blog/baca/?id=${p.id}`)));
+      while (grid.children.length > limit) grid.lastElementChild.remove();
+      grid.classList.add('is-loaded');
+    }).catch(() => {});
+  });
+
+  const reader = document.querySelector('[data-blog-reader]');
+  if (reader) {
+    const id = new URLSearchParams(location.search).get('id');
+    const $ = (sel) => reader.querySelector(sel);
+    if (id && /^\d+$/.test(id)) {
+      jsonp(`${reader.dataset.blogReader}/feeds/posts/default/${id}`, 'post').then((data) => {
+        const e = data.entry; if (!e) throw new Error('kosong');
+        const p = entryInfo(e);
+        const doc = new DOMParser().parseFromString((e.content && e.content.$t) || '', 'text/html');
+        doc.querySelectorAll('script, style, iframe:not([src*="youtube"])').forEach((n) => n.remove());
+        doc.querySelectorAll('*').forEach((n) => [...n.attributes].forEach((a) => { if (/^on|^style$/i.test(a.name)) n.removeAttribute(a.name); }));
+        doc.querySelectorAll('img').forEach((im) => {
+          im.src = im.src.replace(/(blogger\.googleusercontent\.com\/img\/.*?\/)(s|w)\d+(-h\d+)?(-c)?\//, '$1s1600/');
+          if (im.dataset.originalWidth) { im.width = im.dataset.originalWidth; im.height = im.dataset.originalHeight; }
+          im.loading = 'lazy'; im.decoding = 'async';
+        });
+        doc.querySelectorAll('table').forEach((t) => { const w = document.createElement('div'); w.className = 'prose__table'; t.replaceWith(w); w.append(t); });
+        $('[data-post-title]').textContent = p.title;
+        $('[data-post-meta]').textContent = `${fmt(p.date)} · AS-ADS Cetak Desain`;
+        $('[data-post-body]').replaceChildren(...doc.body.childNodes);
+        document.title = `${p.title} | AS-ADS Cetak Desain`;
+      }).catch(() => { $('[data-post-title]').textContent = 'Artikel tidak ditemukan'; });
+    } else { $('[data-post-title]').textContent = 'Artikel tidak ditemukan'; }
   }
 
   // Event whatsapp_click (PRD §9.9): hanya label sumber & halaman. Tidak mengirim nomor/isi pesan.

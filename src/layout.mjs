@@ -23,7 +23,7 @@ export const NAV = [
   { href: '/portofolio/', label: 'Portofolio', key: 'portofolio' },
   { href: '/tentang/', label: 'Tentang', key: 'tentang' },
   { href: '/kontak/', label: 'Kontak', key: 'kontak' },
-  ...(site.blogUrl ? [{ href: site.blogUrl + '/', label: 'Blog', key: 'blog' }] : []),
+  ...(site.blogUrl ? [{ href: '/blog/', label: 'Blog', key: 'blog' }] : []),
 ];
 
 function header(active) {
@@ -68,7 +68,7 @@ function footer() {
         <ul>
           <li><a href="/layanan/#desain-grafis">Desain Grafis</a></li>
           <li><a href="/layanan/#percetakan">Percetakan</a></li>
-          ${site.blogUrl ? `<li><a href="${site.blogUrl}/">Artikel &amp; tips</a></li>` : ''}
+          ${site.blogUrl ? '<li><a href="/blog/">Artikel &amp; tips</a></li>' : ''}
         </ul>
       </div>
     </div>
@@ -79,12 +79,16 @@ function footer() {
 </footer>`;
 }
 
-export function page({ path, title, description, active, body, noindex = false, preview = false }) {
+export function page({ path, title, description, active, body, noindex = false, preview = false, article = null }) {
   const canonical = site.url + path;
   const fullTitle = path === '/' ? `${site.name} | Desain Grafis & Percetakan` : `${title} | ${site.name}`;
-  const jsonLd = path === '/'
-    ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url + '/', email: site.email || undefined, telephone: site.whatsappNumber ? '+' + site.whatsappNumber : undefined })}</script>`
-    : '';
+  const ld = path === '/'
+    ? { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url + '/', email: site.email || undefined, telephone: site.whatsappNumber ? '+' + site.whatsappNumber : undefined }
+    : article
+      ? { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: title, description, datePublished: article.published, dateModified: article.modified, image: article.image || undefined, mainEntityOfPage: canonical, author: { '@type': 'Organization', name: site.name }, publisher: { '@type': 'Organization', name: site.name, url: site.url + '/' } }
+      : null;
+  // Escape '<' agar isi JSON-LD tidak bisa menutup tag <script>.
+  const jsonLd = ld ? `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>` : '';
   return `<!doctype html>
 <html lang="${site.lang}">
 <head>
@@ -94,7 +98,7 @@ export function page({ path, title, description, active, body, noindex = false, 
 <meta name="description" content="${esc(description)}">
 ${noindex || preview ? '<meta name="robots" content="noindex">' : ''}
 ${path === '/404.html' ? '' : `<link rel="canonical" href="${canonical}">`}
-<meta property="og:type" content="website">
+<meta property="og:type" content="${article ? 'article' : 'website'}">
 <meta property="og:locale" content="${site.locale}">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:title" content="${esc(fullTitle)}">

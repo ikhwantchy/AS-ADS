@@ -22,3 +22,12 @@ npm run build    # build production → dist/
 - Section muncul saat di-scroll; kalimat besar di beranda menyala kata demi kata mengikuti scroll.
 - Latar gradien pink–oranye bergerak pelan, strip teks berjalan, parallax ringan pada ilustrasi layanan.
 - Semua animasi dimatikan bila pengguna memilih “kurangi gerakan” di sistem operasinya.
+
+## Blog
+
+Artikel ditulis di Blogger (`blogUrl` di `site.config.mjs`, sekarang https://asads-cetakdesain.blogspot.com) lalu tampil di dalam website:
+
+- `npm run build` mengambil semua artikel dari feed Blogger dan membuat halaman statis `/blog/` dan `/blog/<slug>/`
+  (masuk sitemap, bisa diindeks Google). Build ulang setelah menerbitkan artikel agar halamannya ikut dibuat.
+- Artikel yang terbit setelah build terakhir tetap muncul di Beranda dan `/blog/`, lalu dibuka di `/blog/baca/?id=<postId>`
+  yang memuat isinya langsung dari Blogger (halaman ini `noindex`).

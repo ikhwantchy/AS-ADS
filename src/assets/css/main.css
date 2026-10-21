@@ -195,18 +195,41 @@ button { font: inherit; }
 .q-row__text { font-size: clamp(17px, 1.2vw + 8px, 20px); font-weight: 600; letter-spacing: -0.02em; }
 
 /* ---------- Artikel terbaru dari blog ---------- */
-.blog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 380px)); justify-content: center; gap: 24px; }
 .blog-grid:not(.is-loaded) { grid-template-columns: minmax(0, 560px); justify-content: center; }
 .blog-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px; border-radius: var(--radius); background: rgba(254, 250, 224, .64); border: 2px solid var(--cream-line); text-decoration: none; box-shadow: 6px 4px 37px rgba(124, 124, 124, .05); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
 .blog-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(170, 90, 60, .16); }
 .blog-card--cta { align-items: center; text-align: center; padding: 40px 32px; background: var(--peach); }
-.blog-card__img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; background: var(--peach); }
+.blog-card__img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 12px; background: var(--bg); }
 .blog-card__title { font-size: 19px; line-height: 1.35; letter-spacing: -0.03em; font-weight: 500; }
 .blog-card__text { font-size: 14px; line-height: 1.55; color: var(--soft); }
 .blog-card__more { margin-top: auto; font-size: 14px; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
 .blog-card__more span { display: inline-block; transition: transform .35s var(--ease); }
 .blog-card:hover .blog-card__more span { transform: translateX(4px); }
 .blog .works__more { margin-top: 32px; }
+
+/* ---------- Halaman artikel blog ---------- */
+.container--post { width: min(100% - 32px, 760px); }
+.post { padding: 48px 0 80px; }
+.post__back { display: inline-block; font-size: 14px; text-decoration: none; padding: 8px 14px; border-radius: 10px; background: rgba(254, 224, 185, .6); transition: background-color .25s; }
+.post__back:hover { background: var(--peach); }
+.post__title { margin-top: 24px; font-size: clamp(32px, 3vw + 14px, 50px); line-height: 1.18; letter-spacing: -0.04em; font-weight: 500; text-wrap: balance; }
+.post__meta { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.prose { margin-top: 32px; font-size: 17px; line-height: 1.75; color: #1f1f1f; letter-spacing: -0.01em; }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 { margin-top: 2em; font-size: 28px; line-height: 1.25; letter-spacing: -0.03em; font-weight: 500; }
+.prose h3 { margin-top: 1.6em; font-size: 20px; line-height: 1.35; font-weight: 600; }
+.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--red); }
+.prose img { width: 100%; height: auto; margin-inline: auto; border-radius: 16px; }
+.prose .separator { text-align: center; }
+.prose ul, .prose ol { padding-left: 1.3em; list-style: revert; }
+.prose li + li { margin-top: .4em; }
+.prose__table { overflow-x: auto; border-radius: 16px; border: 1px solid var(--line); background: rgba(254, 250, 224, .7); }
+.prose table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+.prose th, .prose td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.prose th { background: var(--peach); font-weight: 600; }
+.prose tr:last-child td { border-bottom: 0; }
+.blog--page { padding-top: 40px; }
 
 /* ---------- Kotak penutup (Figma "Ready to scale your brand") ---------- */
 .closing { padding: 40px 0 120px; }
@@ -308,7 +331,7 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
 
 /* ---------- Responsif ---------- */
 @media (max-width: 1080px) {
-  .step-list, .tag-grid, .blog-grid.is-loaded { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step-list, .tag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
@@ -336,7 +359,8 @@ a.contact-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba
   .hero { padding: 56px 0 80px; }
   .hero__actions { gap: 12px; width: 100%; }
   .hero__actions .btn { flex: 1 1 100%; }
-  .step-list, .tag-grid, .work-grid, .svc-grid, .blog-grid.is-loaded { grid-template-columns: 1fr; }
+  .step-list, .tag-grid, .work-grid, .svc-grid { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: minmax(0, 1fr); }
   .svc-card--wide { grid-column: auto; }
   .q-row { grid-template-columns: 36px 1fr; padding: 28px 4px; }
   .q-row .chip { grid-column: 2; justify-self: start; }

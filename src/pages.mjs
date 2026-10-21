@@ -2,8 +2,9 @@ import { site } from '../site.config.mjs';
 import { esc, badge, waHref } from './layout.mjs';
 import {
   SERVICES, sectionHead, pageHero, marquee, stepCards, serviceCards, portfolioCarousel, portfolioGrid,
-  questionRows, closingBox, blogSection,
+  questionRows, closingBox,
 } from './sections.mjs';
+import { blogSection } from './blog.mjs';
 
 const home = {
   path: '/',
@@ -11,7 +12,7 @@ const home = {
   active: 'home',
   title: 'Beranda',
   description: 'AS-ADS Cetak Desain membantu kebutuhan desain grafis dan percetakan, dari ide visual sampai hasil yang siap digunakan. Konsultasi langsung via WhatsApp.',
-  body: ({ preview }) => `
+  body: ({ preview, posts = [] }) => `
 <section class="hero" aria-labelledby="hero-title">
   <div class="container hero__inner">
     <h1 class="hero__title" id="hero-title" data-split>Ide bagus jangan berhenti di <em>layar.</em></h1>
@@ -61,7 +62,7 @@ ${marquee()}
   </div>
 </section>
 
-${blogSection()}
+${blogSection(posts)}
 
 ${closingBox()}
 `,
