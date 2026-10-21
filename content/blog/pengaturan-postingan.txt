@@ -1,0 +1,65 @@
+PENGATURAN POSTINGAN BLOGGER
+Blog: https://asads-cetakdesain.blogspot.com
+
+Judul postingan:
+Ukuran Banner yang Umum Dipakai dan Cara Memilihnya
+
+Isi postingan:
+Tempel seluruh isi artikel-ukuran-banner.html dalam "Tampilan HTML" (ikon < > di toolbar editor).
+
+Gambar:
+Unggah infografis-ukuran-banner.png di tempat penanda [GAMBAR], di bawah paragraf pembuka.
+Teks alt: Perbandingan ukuran X-banner, roll up banner, spanduk 3x1 meter, dan backdrop 3x2 serta 4x2 meter
+
+Panel kanan "Setelan postingan":
+- Label: Banner, Tips Cetak, Panduan Desain
+- Link permanen: pilih "Link permanen khusus", isi: ukuran-banner
+- Deskripsi penelusuran (aktifkan dulu di Setelan > Meta tag > Aktifkan deskripsi penelusuran):
+  Panduan ukuran banner yang umum dipakai, mulai dari X-banner 60x160 cm, spanduk 3x1 meter, hingga backdrop, lengkap dengan cara menyiapkan desainnya di Canva sebelum dicetak.
+- Lokasi (opsional): Parung, Kabupaten Bogor
+
+Kata kunci utama: ukuran banner
+Kata kunci pendukung: ukuran banner 3x1 meter di canva, banner 60x160, cetak banner bogor
+
+
+==================================================================
+ARTIKEL 2
+Judul: Desain di Canva Sudah Bagus, Kok Hasil Cetaknya Beda? Ini Penyebabnya
+File isi: 02-canva-hasil-cetak-beda.html   |   Sampul: 02-sampul-canva.png
+Label: Tips Cetak, Canva, Panduan Desain
+Link permanen khusus: desain-canva-hasil-cetak-beda
+Deskripsi penelusuran:
+Warna desain Canva berubah saat dicetak? Ini penyebabnya, mulai dari RGB dan CMYK, resolusi gambar, bleed, sampai format file, plus checklist sebelum kirim ke percetakan.
+
+==================================================================
+ARTIKEL 3
+Judul: Ukuran Kartu Nama Standar dan Kesalahan Desain yang Bikin Kartu Nama Cepat Dibuang
+File isi: 03-ukuran-kartu-nama.html   |   Sampul: 03-sampul-kartu-nama.png
+Label: Kartu Nama, Desain Grafis
+Link permanen khusus: ukuran-kartu-nama-standar
+Deskripsi penelusuran:
+Ukuran kartu nama standar 9 x 5,5 cm lengkap dengan bleed dan area aman, plus lima kesalahan desain yang sering membuat kartu nama tidak disimpan.
+
+==================================================================
+ARTIKEL 4
+Judul: Undangan Cetak atau Undangan Digital, Mana yang Lebih Pas untuk Acaramu?
+File isi: 04-undangan-cetak-vs-digital.html   |   Sampul: 04-sampul-undangan.png
+Label: Undangan, Tips Acara
+Link permanen khusus: undangan-cetak-atau-digital
+Deskripsi penelusuran:
+Bingung memilih undangan cetak atau digital? Bandingkan kelebihan keduanya, kapan sebaiknya dipakai, dan hal yang perlu disiapkan sebelum memesan undangan.
+
+==================================================================
+ARTIKEL 5
+Judul: Brosur, Booklet, atau Majalah? Cara Memilih Media Cetak untuk Promosi Perusahaan
+File isi: 05-brosur-booklet-majalah.html   |   Sampul: 05-sampul-media-cetak.png
+Label: Media Cetak, Promosi Perusahaan
+Link permanen khusus: brosur-booklet-atau-majalah
+Deskripsi penelusuran:
+Perbedaan brosur, booklet, dan majalah perusahaan, kapan memakai masing-masing, dan tips agar media cetak promosi tidak sekadar dibuang.
+
+==================================================================
+JADWAL TERBIT YANG DISARANKAN
+Terbitkan satu artikel setiap 2 sampai 3 hari, bukan sekaligus, supaya blog terlihat aktif.
+Setelah artikel terbit, bagikan link versi website (as-ads.cetakdesain.biz.id/blog/...) ke WhatsApp/Instagram.
+Jalankan "npm run build" lalu upload dist/ sesekali agar setiap artikel punya halaman statis yang bisa diindeks Google.
