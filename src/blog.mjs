@@ -11,7 +11,7 @@ const base = () => (site.blogUrl || '').replace(/\/$/, '');
 export const slugOf = (url) => (url.split('/').pop() || '').replace(/\.html?$/, '');
 const postIdOf = (id) => (id.match(/post-(\d+)/) || [])[1] || '';
 
-const strip = (html = '') => html.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const strip = (html = '') => html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
 const decode = (s = '') => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
 // Isi artikel milik sendiri dari Blogger; tetap dibersihkan dari skrip, atribut event, dan style inline
