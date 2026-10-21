@@ -5,7 +5,7 @@
 <title>Banner artikel AS-ADS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@500;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; }
   html, body { width: 1600px; height: 900px; overflow: hidden; }
@@ -20,16 +20,16 @@
     clip-path: polygon(0 100%, 6% 52%, 18% 70%, 30% 18%, 44% 58%, 58% 6%, 70% 46%, 84% 0, 100% 40%, 100% 100%); }
   .brand { position: absolute; top: 44px; left: 70px; display: flex; align-items: center; gap: 18px; z-index: 5; }
   .brand img { height: 64px; background: #fff; border-radius: 14px; padding: 6px 14px; }
-  .brand span { font-weight: 700; font-size: 22px; letter-spacing: .02em; }
-  .left { position: absolute; left: 66px; top: 135px; bottom: 90px; width: 760px; display: flex; flex-direction: column; justify-content: center; gap: 26px; z-index: 5; }
+  .brand span { display: none; }
+  .left { position: absolute; left: 80px; top: 150px; bottom: 120px; width: 700px; display: flex; flex-direction: column; justify-content: center; z-index: 5; }
   .tagline { align-self: flex-start; font-weight: 500; font-size: 40px; line-height: 1.15; transform: rotate(-4deg); transform-origin: left; }
   .tagline mark { background: #111; color: #fff; padding: 0 12px; border: 2px dashed rgba(255,255,255,.7); }
-  .title { font-family: 'DM Serif Display', serif; font-size: 124px; line-height: .9; letter-spacing: -0.035em; text-shadow: 0 6px 30px rgba(0,0,0,.18); }
+  .title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 118px; line-height: 1; letter-spacing: -0.02em; }
   .title em { font-style: italic; color: var(--accent); }
   .oval { position: absolute; z-index: 6; padding: 16px 34px; border: 3px solid #fff; border-radius: 50%; font-weight: 700; font-size: 30px; line-height: 1.1; text-align: center; transform: rotate(-6deg); }
   .note { width: 470px; font-weight: 500; font-size: 24px; line-height: 1.3; }
   .note b { display: inline-block; margin-top: 10px; text-decoration: underline; text-underline-offset: 5px; }
-  .foot { position: absolute; left: 70px; right: 70px; bottom: 34px; display: flex; justify-content: space-between; font-weight: 700; font-size: 22px; z-index: 6; }
+  .foot { position: absolute; left: 80px; bottom: 44px; font-weight: 400; font-size: 20px; letter-spacing: .04em; opacity: .85; z-index: 6; }
   .foot .hash { font-style: italic; font-weight: 800; color: #111; background: #fff; padding: 2px 14px; border-radius: 8px; }
   .squiggle { position: absolute; z-index: 6; }
   .obj { position: absolute; z-index: 3; filter: drop-shadow(0 28px 40px rgba(0,0,0,.35)); }
@@ -45,7 +45,7 @@ const arrow = (w, h, rot, d) => `<svg class="squiggle" width="${w}" height="${h}
 
 const A = {
   banner: { bg: '#1f3fe0', accent: '#d7ff1f',
-    tag: 'Biar nggak <mark>salah ukuran</mark>', title: 'Ukuran <em>banner</em> yang umum dipakai',
+    tag: '', title: 'Pasang banner,<br>eh malah <em>kekecilan?</em>',
     oval: ['yang wajib', 'kamu tahu!', 'right:120px;top:120px'],
     note: 'X-banner, roll up, spanduk, sampai backdrop. Mana yang pas buat acaramu?<br><b>Cek ukurannya!</b>',
     obj: `
@@ -53,7 +53,7 @@ const A = {
         <g transform="translate(40 20)">
           <rect x="0" y="0" width="190" height="500" rx="10" fill="#fff"/>
           <rect x="0" y="0" width="190" height="150" rx="10" fill="#ff3b5c"/>
-          <text x="95" y="90" fill="#fff" font-family="DM Serif Display" font-size="54" text-anchor="middle">SALE</text>
+          <text x="95" y="90" fill="#fff" font-family="Instrument Serif" font-size="54" text-anchor="middle">SALE</text>
           <rect x="22" y="180" width="146" height="18" rx="9" fill="#1f3fe0"/><rect x="22" y="212" width="110" height="14" rx="7" fill="#cfd6ff"/>
           <rect x="22" y="250" width="146" height="150" rx="8" fill="#d7ff1f"/>
           <rect x="22" y="420" width="90" height="16" rx="8" fill="#1f3fe0"/>
@@ -61,15 +61,15 @@ const A = {
         </g>
         <g transform="translate(270 300) rotate(-6)">
           <rect x="0" y="0" width="280" height="96" rx="6" fill="#111"/>
-          <text x="140" y="62" fill="#d7ff1f" font-family="Poppins" font-weight="800" font-size="40" text-anchor="middle">3 x 1 m</text>
+          <text x="140" y="62" fill="#d7ff1f" font-family="Poppins" font-weight="500" font-size="40" text-anchor="middle">3 x 1 m</text>
         </g>
         <g stroke="#fff" stroke-width="3"><line x1="20" y1="20" x2="20" y2="520"/><line x1="10" y1="20" x2="30" y2="20"/><line x1="10" y1="520" x2="30" y2="520"/></g>
-        <text x="0" y="280" fill="#fff" font-family="Poppins" font-weight="700" font-size="26" transform="rotate(-90 0 280)" text-anchor="middle">160 cm</text>
+        <text x="0" y="280" fill="#fff" font-family="Poppins" font-weight="500" font-size="26" transform="rotate(-90 0 280)" text-anchor="middle">160 cm</text>
       </svg>`,
-    extra: arrow(240, 130, 10, 'left:860px;top:150px') + `<div class="sticker" style="right:90px;bottom:230px">60 x 160 cm</div>` },
+    extra: arrow(240, 130, 10, 'left:860px;top:150px') },
 
   canva: { bg: '#b8127a', accent: '#ffd23f',
-    tag: '#TipsCetak, <mark>kenalan yuk</mark>', title: 'Kok hasil <em>cetaknya</em> beda?',
+    tag: '', title: 'Di layar cakep,<br>di kertas<br>kok <em>kusam?</em>',
     oval: ['desain Canva', 'vs kertas', 'right:140px;top:110px'],
     note: 'Warna di layar cerah, pas dicetak kok kusam? Ini 7 penyebabnya.<br><b>RGB vs CMYK</b>',
     obj: `
@@ -81,7 +81,7 @@ const A = {
           <rect x="210" y="40" width="150" height="80" rx="10" fill="#00e5ff"/>
           <rect x="210" y="140" width="150" height="80" rx="10" fill="#7cff00"/>
           <path d="M-30 270 H430 L400 300 H0 Z" fill="#444"/>
-          <text x="200" y="350" fill="#fff" font-family="Poppins" font-weight="800" font-size="30" text-anchor="middle">DI LAYAR (RGB)</text>
+          <text x="200" y="350" fill="#fff" font-family="Poppins" font-weight="500" font-size="30" text-anchor="middle">DI LAYAR (RGB)</text>
         </g>
         <g transform="translate(400 170) rotate(8)">
           <rect x="0" y="0" width="220" height="300" fill="#fbf7ee"/>
@@ -89,13 +89,13 @@ const A = {
           <rect x="118" y="24" width="80" height="52" rx="6" fill="#57a9b8"/>
           <rect x="118" y="86" width="80" height="48" rx="6" fill="#8fbf4a"/>
           <rect x="22" y="160" width="176" height="12" rx="6" fill="#ccc"/><rect x="22" y="184" width="130" height="12" rx="6" fill="#ddd"/>
-          <text x="110" y="270" fill="#111" font-family="Poppins" font-weight="800" font-size="24" text-anchor="middle">DICETAK</text>
+          <text x="110" y="270" fill="#111" font-family="Poppins" font-weight="500" font-size="24" text-anchor="middle">DICETAK</text>
         </g>
       </svg>`,
-    extra: arrow(220, 120, -8, 'left:820px;top:610px') + `<div class="sticker" style="right:60px;bottom:110px">CMYK</div>` },
+    extra: arrow(220, 120, -8, 'left:820px;top:610px') },
 
   undangan: { bg: '#e2402a', accent: '#ffe7b3',
-    tag: 'Tim cetak atau <mark>tim digital?</mark>', title: 'Undangan <em>cetak</em> atau digital',
+    tag: '', title: 'Kirim lewat WA,<br>atau antar<br><em>langsung?</em>',
     oval: ['mana yang', 'lebih pas?', 'right:110px;top:110px'],
     note: 'Biar tamu penting tetap merasa dihormati, dan teman jauh tetap kebagian kabar.<br><b>Bisa dua-duanya!</b>',
     obj: `
@@ -103,8 +103,8 @@ const A = {
         <g transform="translate(20 40) rotate(-7)">
           <rect x="0" y="0" width="300" height="420" rx="6" fill="#fffaf0"/>
           <rect x="18" y="18" width="264" height="384" rx="4" fill="none" stroke="#c99a3a" stroke-width="3"/>
-          <text x="150" y="110" fill="#b5532f" font-family="DM Serif Display" font-style="italic" font-size="44" text-anchor="middle">Undangan</text>
-          <text x="150" y="170" fill="#333" font-family="DM Serif Display" font-size="34" text-anchor="middle">Rina &amp; Dimas</text>
+          <text x="150" y="110" fill="#b5532f" font-family="Instrument Serif" font-style="italic" font-size="44" text-anchor="middle">Undangan</text>
+          <text x="150" y="170" fill="#333" font-family="Instrument Serif" font-size="34" text-anchor="middle">Rina &amp; Dimas</text>
           <path d="M80 200 H220" stroke="#c99a3a" stroke-width="2"/>
           <rect x="70" y="240" width="160" height="10" rx="5" fill="#ddd"/><rect x="90" y="265" width="120" height="10" rx="5" fill="#ddd"/>
           <circle cx="150" cy="340" r="30" fill="#e2402a"/>
@@ -112,32 +112,32 @@ const A = {
         <g transform="translate(320 140) rotate(6)">
           <rect x="0" y="0" width="210" height="420" rx="34" fill="#111"/>
           <rect x="12" y="40" width="186" height="340" rx="18" fill="#ffe7b3"/>
-          <text x="105" y="150" fill="#b5532f" font-family="DM Serif Display" font-style="italic" font-size="34" text-anchor="middle">Undangan</text>
-          <text x="105" y="190" fill="#111" font-family="Poppins" font-weight="700" font-size="20" text-anchor="middle">digital</text>
+          <text x="105" y="150" fill="#b5532f" font-family="Instrument Serif" font-style="italic" font-size="34" text-anchor="middle">Undangan</text>
+          <text x="105" y="190" fill="#111" font-family="Poppins" font-weight="500" font-size="20" text-anchor="middle">digital</text>
           <rect x="40" y="290" width="130" height="40" rx="20" fill="#25d366"/>
-          <text x="105" y="317" fill="#fff" font-family="Poppins" font-weight="700" font-size="17" text-anchor="middle">Kirim WA</text>
+          <text x="105" y="317" fill="#fff" font-family="Poppins" font-weight="500" font-size="17" text-anchor="middle">Kirim WA</text>
         </g>
       </svg>`,
     extra: arrow(230, 125, 15, 'left:830px;top:180px') },
 
   kartunama: { bg: '#0d0d0d', accent: '#ff3b3b',
-    tag: 'Kesan pertama itu <mark>9 x 5,5 cm</mark>', title: 'Kartu nama <em>cepat dibuang?</em>',
+    tag: '', title: 'Disimpan,<br>atau langsung<br><em>dibuang?</em>',
     oval: ['5 kesalahan', 'desainnya', 'right:110px;top:110px'],
     note: 'Ukuran standar, bleed, area aman, sampai kesalahan yang bikin kartu nama nggak disimpan.<br><b>Cek sebelum cetak</b>',
     obj: `
       <svg class="obj" style="right:90px;top:250px" width="620" height="520" viewBox="0 0 620 520">
         <g transform="translate(60 210) rotate(-12)"><rect width="420" height="257" rx="14" fill="#ff3b3b"/>
-          <text x="210" y="150" fill="#fff" font-family="DM Serif Display" font-size="66" text-anchor="middle">AS-ADS</text></g>
+          <text x="210" y="150" fill="#fff" font-family="Instrument Serif" font-size="66" text-anchor="middle">AS-ADS</text></g>
         <g transform="translate(150 60) rotate(6)"><rect width="420" height="257" rx="14" fill="#fff"/>
-          <text x="40" y="95" fill="#111" font-family="Poppins" font-weight="800" font-size="34">Nama Kamu</text>
+          <text x="40" y="95" fill="#111" font-family="Poppins" font-weight="500" font-size="34">Nama Kamu</text>
           <text x="40" y="132" fill="#777" font-family="Poppins" font-weight="500" font-size="20">Jabatan · Nama Usaha</text>
           <rect x="40" y="185" width="200" height="14" rx="7" fill="#ddd"/><rect x="40" y="210" width="150" height="14" rx="7" fill="#ddd"/>
           <rect x="18" y="18" width="384" height="221" rx="8" fill="none" stroke="#ff3b3b" stroke-width="3" stroke-dasharray="10 8"/></g>
       </svg>`,
-    extra: arrow(220, 120, 0, 'left:850px;top:660px') + `<div class="sticker" style="right:70px;top:250px">bleed 3 mm</div>` },
+    extra: arrow(220, 120, 0, 'left:850px;top:660px') },
 
   brosur: { bg: '#0f7a55', accent: '#d7ff1f',
-    tag: 'Promosi kantor, <mark>pilih yang mana?</mark>', title: 'Brosur, <em>booklet</em>, atau majalah?',
+    tag: '', title: 'Cukup selembar,<br>atau perlu<br><em>berhalaman?</em>',
     oval: ['biar nggak', 'salah cetak', 'right:110px;top:110px'],
     note: 'Satu pesan, penjelasan lengkap, atau komunikasi rutin. Tiap media punya fungsinya.<br><b>Pilih yang tepat</b>',
     obj: `
@@ -145,17 +145,17 @@ const A = {
         <g transform="translate(20 140) rotate(-6)">
           <path d="M0 0 L120 20 L120 330 L0 310 Z" fill="#fff"/><path d="M120 20 L240 0 L240 310 L120 330 Z" fill="#eef7f2"/><path d="M240 0 L360 20 L360 330 L240 310 Z" fill="#fff"/>
           <rect x="140" y="60" width="80" height="80" rx="40" fill="#d7ff1f"/><rect x="20" y="70" width="80" height="12" rx="6" fill="#0f7a55"/><rect x="260" y="70" width="80" height="12" rx="6" fill="#0f7a55"/>
-          <text x="180" y="230" fill="#0f7a55" font-family="Poppins" font-weight="800" font-size="26" text-anchor="middle">BROSUR</text>
+          <text x="180" y="230" fill="#0f7a55" font-family="Poppins" font-weight="500" font-size="26" text-anchor="middle">BROSUR</text>
         </g>
         <g transform="translate(330 40) rotate(7)">
           <rect width="260" height="350" rx="6" fill="#d7ff1f"/>
-          <text x="22" y="80" fill="#111" font-family="DM Serif Display" font-size="58">MAJALAH</text>
+          <text x="22" y="80" fill="#111" font-family="Instrument Serif" font-size="58">MAJALAH</text>
           <rect x="22" y="110" width="216" height="170" rx="6" fill="#0f7a55"/>
           <rect x="22" y="300" width="150" height="14" rx="7" fill="#111"/>
         </g>
         <g transform="translate(250 330) rotate(-3)">
           <rect width="230" height="170" rx="6" fill="#fff"/><line x1="115" y1="0" x2="115" y2="170" stroke="#ccc" stroke-width="3"/>
-          <text x="115" y="100" fill="#111" font-family="Poppins" font-weight="800" font-size="26" text-anchor="middle">BOOKLET</text>
+          <text x="115" y="100" fill="#111" font-family="Poppins" font-weight="500" font-size="26" text-anchor="middle">BOOKLET</text>
         </g>
       </svg>`,
     extra: arrow(220, 120, 12, 'left:840px;top:170px') },
@@ -168,12 +168,9 @@ card.style.setProperty('--bg', a.bg); card.style.setProperty('--accent', a.accen
 card.innerHTML = `
   <div class="spike"></div>
   <div class="brand"><img src="${LOGO}" alt=""><span>Blog AS-ADS Cetak Desain</span></div>
-  <div class="left"><div class="tagline">${a.tag}</div>
-  <h1 class="title">${a.title}</h1>
-  <p class="note">${a.note}</p></div>
-  <div class="oval" style="${a.oval[2]}">${a.oval[0]}<br>${a.oval[1]}</div>
+  <div class="left"><h1 class="title">${a.title}</h1></div>
   ${a.obj}${a.extra}
-  <div class="foot"><span>as-ads.cetakdesain.biz.id/blog</span><span class="hash"># KREATIF AJA</span></div>`;
+  <div class="foot">as-ads.cetakdesain.biz.id/blog</div>`;
 </script>
 </body>
 </html>
